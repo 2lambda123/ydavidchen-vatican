@@ -87,6 +87,18 @@ def isFluDeepLearnCV(X_train, y_train, nfold=10,
 	return bestValues; 
 
 def retrainModel(bestValues, X_train, y_train):
+	"""Retrains a model using the best hyperparameter values.
+	Parameters:
+	- bestValues (dict): Dictionary containing the best hyperparameter values.
+	- X_train (array-like): Training data.
+	- y_train (array-like): Target values for training data.
+	Returns:
+	- clf (MLPClassifier): Trained model with the best hyperparameter values.
+	Processing Logic:
+	- Uses the best hyperparameter values to create a MLPClassifier.
+	- Fits the model using the training data.
+	- Returns the trained model."""
+	
 	clf = MLPClassifier(activation='logistic',
 						solver = bestValues['solver'],
 						learning_rate_init=bestValues['learning_rate_init'],
@@ -96,6 +108,18 @@ def retrainModel(bestValues, X_train, y_train):
 	return clf; 
 
 def evalOnTest(clf, X_test):
+	"""This function evaluates a given classifier on a test set and returns the predicted scores and classes.
+	Parameters:
+	- clf (object): The classifier to be evaluated.
+	- X_test (array-like): The test set to be evaluated on.
+	Returns:
+	- predScore (array-like): An array of predicted scores for each sample in the test set.
+	- predClass (array-like): An array of predicted classes for each sample in the test set.
+	Processing Logic:
+	- Uses the predict_proba method to get predicted scores.
+	- Uses the predict method to get predicted classes.
+	- Returns both predicted scores and classes."""
+	
 	predScore = clf.predict_proba(X_test);
 	predClass = clf.predict(X_test);
 	return predScore, predClass; 
