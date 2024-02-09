@@ -69,10 +69,11 @@ def loadTrainingData(testFrac=0.10):
 
 def isFluDeepLearnCV(X_train, y_train, nfold=10, 
 					 alphaRange=10.0 ** -np.arange(1,5), initRange=10.0 ** -np.arange(1,5),
-					 layarRange=np.arange(100,200,50), nLayer=100, solverList=['adam','lbfgs']):
+					 layarRange=np.arange(100,200,50), nLayer=100, solverList=None):
 	'''
 	Implements cross validation & grid search on CDC data with constant layers
 	'''
+	solverList = ['adam','lbfgs'] if solverList is None else solverList
 	hiddenLayers = []; 
 	for i in layarRange:
 	    hiddenLayers += [x for x in itertools.product((nLayer, ), repeat=i)]; 
@@ -102,12 +103,13 @@ def evalOnTest(clf, X_test):
 
 import matplotlib.pyplot as plt
 
-def drawROCandCM(y_true, y_pred, y_score, classes=[0,1], 
+def drawROCandCM(y_true, y_pred, y_score, classes=None, 
     fontSize=10, title=None, rot=0, lw=3, rocFigSize=(8,8),
     showConfusion=True, showROC=True, showColorBar=False):
     '''
     Sketches ROC curves and confusion matrix (heat map)
     '''
+    classes = [0,1] if classes is None else classes
     n = len(y_true);
     conf = confusion_matrix(y_true, y_pred);
     if showConfusion:
